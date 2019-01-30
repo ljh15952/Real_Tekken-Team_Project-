@@ -124,9 +124,11 @@ public class AI_IEnumrator_Func : MonoBehaviour
     IEnumerator DelayStart()
     {
         yield return new WaitForSeconds(0.5f);
-        GameMng.Instance.camCon.isAction = false;
+        StartCoroutine("SetWhiteScale", 0.5f);
 
         yield return new WaitForSeconds(1.25f);
+        GameMng.Instance.camCon.isAction = false;
+
      //   test2.gameObject.active = true;
         gameMng.SetStart(true);
         AI.Ani.SetTrigger("궁극기");
@@ -135,6 +137,29 @@ public class AI_IEnumrator_Func : MonoBehaviour
         StartCoroutine("FixingVelocity", 0.5f);
         gameMng.camCon.SetDeFaultState(0);
         gameMng.camCon.SetEyeAdaptation(30, 0.25f);
+
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine("SetWhiteScale", 0.5f);
+
+        yield return new WaitForSeconds(1.25f);
+    }
+
+    IEnumerator SetWhiteScale(float _Time)
+    {
+        float tempScale = 0;
+
+        while (tempScale != 1)
+        {
+            tempScale = Mathf.MoveTowards(tempScale, 1, 1 / ((_Time / 2) * 60));
+            AI.GetComponent<SpriteRenderer>().material.SetFloat("whiteScale", tempScale);
+            yield return new WaitForEndOfFrame();
+        }
+        while (tempScale != 0)
+        {
+            tempScale = Mathf.MoveTowards(tempScale, 0, 1 / ((_Time / 2) * 60));
+            AI.GetComponent<SpriteRenderer>().material.SetFloat("whiteScale", tempScale);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     IEnumerator FixingVelocity(float _Time)
@@ -150,6 +175,7 @@ public class AI_IEnumrator_Func : MonoBehaviour
     public void Ultimate_Func()
     {
         Debug.Log("ULTIMATE");
+        AI.GetComponent<Fox>().isAction = true;
         gameMng.SetStart(false);
         gameMng.camCon.ZoomCharacter(AI.GetComponent<Fox>().isturn, AI.GetComponent<Fox>().ctrlType);
         gameMng.camCon.isAction = true;

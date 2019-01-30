@@ -696,8 +696,10 @@ public class Player : MonoBehaviour
     {
         if (isMove)
             playerAni.SetTrigger("IsMoveFirst");
-        else
+        else if(!isAI)
+        {
             playerAni.SetTrigger("IsIdle");
+        }
     }
     public void SetDefaultActionState() // 액션 상태를 처음 상태로 초기화
     {
@@ -712,8 +714,10 @@ public class Player : MonoBehaviour
             return;
         if (isMove)
             playerAni.SetTrigger("IsMoveFirst");
-        else
+        else if(!isAI)
+        {
             playerAni.SetTrigger("IsIdle");
+        }
     }
 
     public void FirstSetting()

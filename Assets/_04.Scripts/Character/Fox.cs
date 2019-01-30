@@ -216,7 +216,7 @@ public class Fox : Player {
     {
         while (_Time >= 0)
         {
-        StopCoroutine("FixingVelocity");
+            StopCoroutine("FixingVelocity");
             transform.position = gameMng.Hero1.GetComponent<Transform>().position + new Vector3(1f * GetArrow(), 1);
             myRb.velocity = new Vector2(0, 0);
             yield return new WaitForEndOfFrame();
@@ -228,8 +228,13 @@ public class Fox : Player {
         gameMng.Hero2.isLower = false;
         myRb.velocity = new Vector2(10 * GetArrow(), 10);
         isAction = false;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.7f);
         test2.gameObject.active = false;
+        playerAni.SetTrigger("IsIdle");
+        if (isAI)
+        {
+            GetComponent<Fox_AI>()._Fox.curState = AI_STATE.Idle;
+        }
 
     }
     public void SetAfterImage()
