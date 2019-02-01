@@ -659,13 +659,14 @@ public class Player : MonoBehaviour
     }
     void SetPlayerAction()
     {
-        Debug.Log(currentActionCount.ToString() + " " + weekPunchCount.ToString());
         if (weekPunchCount == currentActionCount)
         {
             SetDefaultActionState();
         }
-        else
-            playerAni.SetTrigger("NextPunch");
+        else if (!isAI)
+        {
+          playerAni.SetTrigger("NextPunch");
+        }
     }
     void SetDamageState()
     {

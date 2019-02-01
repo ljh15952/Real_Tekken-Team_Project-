@@ -11,7 +11,10 @@ public enum AI_STATE
     Guard = 6,
     Back_Jump = 7,
     Wait_Attack,
-    Ultimate_State
+    Ultimate_State,
+    Skill_1_State,
+    Skill_2_State,
+    Combo_1_State
 }
 
 public class AI_IEnumrator_Func : MonoBehaviour
@@ -35,7 +38,7 @@ public class AI_IEnumrator_Func : MonoBehaviour
         float time = 0f;
         AI.GetComponent<Player>().isGuard = true;
         AI.Ani.SetTrigger("IsIdle");
-        while (AI.AM.GetDistance() > 3f && time < 3)
+        while (AI.AM.GetDistance() > 3f && time < 0.7f)
         {
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
@@ -65,7 +68,7 @@ public class AI_IEnumrator_Func : MonoBehaviour
 
         AI.GetComponent<Player>().isGuard = true;
 
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.3f);
 
         AI.GetComponent<Player>().isGuard = false;
         //랜덤공격 꼬리치기나 콤보나 평타
@@ -77,11 +80,11 @@ public class AI_IEnumrator_Func : MonoBehaviour
     {
         AI.Ani.SetTrigger("WeekPunch");
         yield return new WaitForSeconds(0.3f);
-        AI.Ani.SetBool("b_NextPunch", true);
+        AI.Ani.SetTrigger("NextPunch");
         AI.Ani.SetTrigger("WeekPunch");
         yield return new WaitForSeconds(0.3f);
         AI.Ani.SetTrigger("IsIdle");
-        AI.Ani.SetBool("b_NextPunch", false);
+        //AI.Ani.SetBool("b_NextPunch", false);
         AI._Fox.curState = AI_STATE.Idle;
     }  //공격
        //   //
@@ -185,5 +188,49 @@ public class AI_IEnumrator_Func : MonoBehaviour
     }
 
 
+    public void Skill_1_Func()
+    {
+        StartCoroutine(Skill_1_IEnum());
+    }
+
+    IEnumerator Skill_1_IEnum()
+    {
+        AI.Ani.SetTrigger("기술1");
+        yield return new WaitForSeconds(0.5f);
+        AI._Fox.curState = AI_STATE.Idle;
+    }
+
+    public void Skill_2_Func()
+    {
+        AI.Ani.SetTrigger("기술2");
+        StartCoroutine(Skill_2_IEnum(0.5f));
+    }
+
+    IEnumerator Skill_2_IEnum(float _Time)
+    {
+        while (_Time >= 0)
+        {
+            AI.myRb.velocity = new Vector2(-15 * AI.GetComponent<Fox>().GetArrow(), 5);
+            yield return new WaitForEndOfFrame();
+            _Time -= Time.deltaTime;
+        }
+        AI._Fox.curState = AI_STATE.Idle;
+    }
+
+    public void Fox_Combo_1()
+    {
+        StartCoroutine(Fox_Combo_1_IEnum(6));
+    }
+
+    IEnumerator Fox_Combo_1_IEnum(int _Count)
+    {
+        while (_Count >= 0)
+        {
+            AI.Ani.SetTrigger("기술1");
+            yield return new WaitForSeconds(0.35f);
+            _Count--;
+        }
+        AI._Fox.curState = AI_STATE.Idle;
+    }
 
 }

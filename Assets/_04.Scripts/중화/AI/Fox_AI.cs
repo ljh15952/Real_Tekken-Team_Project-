@@ -40,14 +40,20 @@ public class Fox_AI : MonoBehaviour
             _Fox.curState == AI_STATE.Back_Jump ||
             _Fox.curState == AI_STATE.Wait_Attack ||
             _Fox.curState == AI_STATE.Gather_Atk||
-            _Fox.curState == AI_STATE.Ultimate_State)
+            _Fox.curState == AI_STATE.Ultimate_State||
+            _Fox.curState == AI_STATE.Skill_1_State||
+            _Fox.curState == AI_STATE.Skill_2_State||
+            _Fox.curState == AI_STATE.Combo_1_State)
             return;
       
         if (AM.GetDistance() > 8.5f)
         {
+            if (_Fox.curState == AI_STATE.Dash)
+                return;
             int RandNum = Random.Range(0, 2);
+
             //랜덤넘
-            switch (1)
+            switch (RandNum)
             {
                 case 0:
                     if (_Fox.curState != AI_STATE.Dash)
@@ -75,7 +81,7 @@ public class Fox_AI : MonoBehaviour
             if (_Fox.curState == AI_STATE.Walk)
                 return;
 
-            int RandNum = Random.Range(0, 3);
+            int RandNum = Random.Range(0, 4);
 
             switch (RandNum)
             {
@@ -103,12 +109,20 @@ public class Fox_AI : MonoBehaviour
                         _Fox.Attack();
                     }
                     break;
+                case 3:
+                    if(_Fox.curState != AI_STATE.Skill_2_State)
+                    {
+                        _Fox.curState = AI_STATE.Skill_2_State;
+                        _Fox.SetAtkStrategy(new Skill_2());
+                        _Fox.Attack();
+                    }
+                    break;
                     //랜덤넘증가 굴러가는기술
             }
         }
         else
         {
-            int RandNum = Random.Range(0, 3);
+            int RandNum = Random.Range(0, 5);
             switch (RandNum)
             {
                 case 0:
@@ -135,6 +149,23 @@ public class Fox_AI : MonoBehaviour
                         _Fox.Attack();
                     }
                     break;
+                case 3:
+                    if (_Fox.curState != AI_STATE.Skill_1_State)
+                    {
+                        _Fox.curState = AI_STATE.Skill_1_State;
+                        _Fox.SetAtkStrategy(new Skill_1());
+                        _Fox.Attack();
+                    }
+                    break;
+                case 4:
+                    if (_Fox.curState != AI_STATE.Combo_1_State)
+                    {
+                        _Fox.curState = AI_STATE.Combo_1_State;
+                        _Fox.SetAtkStrategy(new Combo_1());
+                        _Fox.Attack();
+                    }
+                    break;
+
                     //랜덤넘 증가 꼬리치기공격 or 꼬리치기 콤보
             }
 

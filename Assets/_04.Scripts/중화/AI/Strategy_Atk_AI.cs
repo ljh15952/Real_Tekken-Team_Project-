@@ -14,14 +14,17 @@ class Skill_1 : Strategy_Atk_AI
 {
     public override void Atk()
     {
+        A = GameObject.FindWithTag("AIF");
+        A.GetComponent<AI_IEnumrator_Func>().Skill_1_Func();
     }
-  
 }
 
 class Skill_2 : Strategy_Atk_AI
 {
     public override void Atk()
     {
+        A = GameObject.FindWithTag("AIF");
+        A.GetComponent<AI_IEnumrator_Func>().Skill_2_Func();
     }
    
 }
@@ -30,6 +33,8 @@ class Combo_1 : Strategy_Atk_AI
 {
     public override void Atk()
     {
+        A = GameObject.FindWithTag("AIF");
+        A.GetComponent<AI_IEnumrator_Func>().Fox_Combo_1();
     }
 }
 
